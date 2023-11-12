@@ -32,7 +32,7 @@ def scrape_product_skus(url):
             product_price = [sku.text for sku in soup.find_all('span', class_="_95eae7db")]
             product_data['Site2'] = {}
             product_data['Site2']['Title'] = [modified_titles[title] for title in range(len(modified_titles)-1)]
-            product_data['Site2']['price'] = [product_price[price].replace('Rs', '') for price in range(len(product_price)-1)]
+            product_data['Site2']['Price'] = [product_price[price].replace('Rs', '') for price in range(len(product_price)-1)]
             return product_data
     else:
         print(f"Failed to fetch data from {url}")
@@ -65,7 +65,7 @@ print("Site 2 data: ", df2,sep="\n")
 merged_df = df1.merge(df2, on='Title', how='inner',suffixes=('_site1', '_site2'))
 
 #Recomendation based on price
-merged_df['Recommendation'] = ['Site 1' if int(price_site1.replace(',', '')) < int(price_site2.replace(',', '')) else 'Site 2' for price_site1, price_site2 in zip(merged_df['price_site1'], merged_df['price_site2'])]
+merged_df['Recommendation'] = ['Site 1' if int(price_site1.replace(',', '')) < int(price_site2.replace(',', '')) else 'Site 2' for price_site1, price_site2 in zip(merged_df['Price_site1'], merged_df['Price_site2'])]
 print("Common Products ",merged_df, sep="\n")
 
 # write data in xls
